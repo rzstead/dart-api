@@ -8,10 +8,10 @@ import models.User;
 
 @RestController
 @RequestMapping("/login")
-public class LoginController extends BaseController {
+public class LoginController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public Boolean login(@RequestBody User user) {
-		return dbAccess.authenticateUser(user);
+		return null;
 	}
 }
