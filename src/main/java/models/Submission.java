@@ -1,8 +1,8 @@
 package models;
 
 public class Submission {
-	public int id;
-	public Project project;
+	private int id;
+	private Project project;
 	
 	public int getId() {
 		return id;

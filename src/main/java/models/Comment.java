@@ -3,11 +3,11 @@ package models;
 import java.util.Date;
 
 public class Comment {
-	public int id;
-	public User owner;
-	public String text;
-	public int rating;
-	public Date postDate;
+	private int id;
+	private User owner;
+	private String text;
+	private int rating;
+	private Date postDate;
 	
 	public int getId() {
 		return id;

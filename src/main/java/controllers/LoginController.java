@@ -9,9 +9,9 @@ import models.User;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public Boolean login(@RequestBody User user) {
-		return null;
+		return user != null;
 	}
 }

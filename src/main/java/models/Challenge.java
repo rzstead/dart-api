@@ -1,13 +1,15 @@
 package models;
 
 import java.util.Date;
+import java.util.List;
 
 public class Challenge {
-	public int id;
-	public String title;
-	public String description;
-	public Date startDate;
-	public Date endDate;
+	private int id;
+	private String title;
+	private String description;
+	private Date startDate;
+	private Date endDate;
+	private List<Submission> submissions;
 	
 	public int getId() {
 		return id;
@@ -38,5 +40,11 @@ public class Challenge {
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	public List<Submission> getSubmissions() {
+		return submissions;
+	}
+	public void setSubmissions(List<Submission> submissions) {
+		this.submissions = submissions;
 	}
 }

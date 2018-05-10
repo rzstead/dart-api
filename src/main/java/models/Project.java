@@ -11,16 +11,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-@Entity
+//@Entity
 public class Project {
-	@Id
-	@Column(name="project_id")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	//@Id
+	//@Column(name="project_id")
+	//@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private User artist;
 	private String description;
-	@OneToMany(mappedBy="project")
-	private List<ProjectItem> gallery = new ArrayList<>();
+	//@OneToMany(mappedBy="project")
+	private List<MediaEntry> gallery = new ArrayList<>();
 	private List<Comment> comments = new ArrayList<>();
 	private int rating;
 	private Date postDate;
@@ -49,11 +49,11 @@ public class Project {
 		this.description = description;
 	}
 
-	public List<ProjectItem> getGallery() {
+	public List<MediaEntry> getGallery() {
 		return gallery;
 	}
 
-	public void setGallery(List<ProjectItem> gallery) {
+	public void setGallery(List<MediaEntry> gallery) {
 		this.gallery = gallery;
 	}
 

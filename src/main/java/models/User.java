@@ -11,12 +11,12 @@ public class User {
 	@Id
 	@Column(name="user_id")
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	public int id;
-	public String hashedPass;
-	public String username;
-	public String description;
-	public String avatarLink;
-	public String backgroundLink;
+	private int id;
+	private String hashedPass;
+	private String username;
+	private String description;
+	private String avatarLink;
+	private String backgroundLink;
 	
 	public int getId() {
 		return id;

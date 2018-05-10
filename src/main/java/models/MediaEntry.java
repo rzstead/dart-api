@@ -8,18 +8,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
-public class ProjectItem {
-	@Id
-	@Column(name = "item_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public int id;
-	@ManyToOne
-	@JoinColumn(name="project_id")
-	public Project project;
-	public String mediaLink;
-	public String description;
-	public int rating;
+//@Entity
+public class MediaEntry {
+	//@Id
+	//@Column(name = "item_id")
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	//@ManyToOne
+	//@JoinColumn(name="project_id")
+	private Project project;
+	private String mediaLink;
+	private String description;
+	private int rating;
 
 	public int getId() {
 		return id;
