@@ -15,8 +15,8 @@ import repos.UserJpaRepository;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	@Autowired
-	private UserJpaRepository userRepo;
+	//@Autowired
+//	private UserJpaRepository userRepo;
 	
 	private List<User> users = new ArrayList<User>();
 
@@ -52,6 +52,11 @@ public class UserController {
 			users.remove(existing);
 		}
 		//userRepo.deleteById(id);
+	}
+	
+	@RequestMapping(path="/sayHello", method = RequestMethod.GET)
+	public String sayHello() {
+		return "Hello!";
 	}
 	
 	private User findUser(int id) {

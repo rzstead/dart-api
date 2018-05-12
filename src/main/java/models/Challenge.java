@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class Challenge {
 	private String description;
 	private Date startDate;
 	private Date endDate;
-	private List<Submission> submissions;
+	private List<Submission> submissions = new ArrayList<Submission>();
 	
 	public int getId() {
 		return id;

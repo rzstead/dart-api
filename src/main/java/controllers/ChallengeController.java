@@ -26,7 +26,7 @@ public class ChallengeController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public void updateUser(@RequestBody Challenge challenge) {
+	public void updateChallenge(@RequestBody Challenge challenge) {
 		Challenge existing = findChallenge(challenge.getId());
 		//User existing = userRepo.findById(user.getId()).orElse(null);
 		if(existing != null) {
@@ -38,7 +38,7 @@ public class ChallengeController {
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-	public void removeUser(@PathVariable int id) {
+	public void removeChallenge(@PathVariable int id) {
 		Challenge existing = findChallenge(id);
 		if(existing != null) {
 			challenges.remove(existing);
