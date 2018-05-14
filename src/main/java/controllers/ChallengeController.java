@@ -4,57 +4,49 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import models.Challenge;
+import repos.ChallengeJpaRepository;
 
 public class ChallengeController {
-	private List<Challenge> challenges = new ArrayList<Challenge>();
+	
+	@Autowired
+	private ChallengeJpaRepository challengeRepo;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Challenge> getChallenges() {
-		return challenges;
-		//return userRepo.findAll();
+		return challengeRepo.findAll();
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public Challenge getChallenge(@PathVariable int id) {
-		return findChallenge(id);
-		//return userRepo.findById(id).orElse(null);
+		return challengeRepo.findById(id).orElse(null);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public void updateChallenge(@RequestBody Challenge challenge) {
-		Challenge existing = findChallenge(challenge.getId());
-		//User existing = userRepo.findById(user.getId()).orElse(null);
+		Challenge existing = challengeRepo.findById(challenge.getId()).orElse(null);
 		if(existing != null) {
 			existing.setDescription(challenge.getDescription());
 			existing.setStartDate(challenge.getStartDate());
 			existing.setEndDate(challenge.getEndDate());
 			existing.setTitle(challenge.getTitle());
+			challengeRepo.saveAndFlush(existing);
 		}
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public void removeChallenge(@PathVariable int id) throws FileNotFoundException {
-		Challenge existing = findChallenge(id);
-		if(existing != null) {
-			challenges.remove(existing);
-		}else {
-			throw new FileNotFoundException("Could not find challenge with that id!");
-		}
-		//userRepo.deleteById(id);
+		challengeRepo.deleteById(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public void addChallenge(@RequestBody Challenge challenge) {
-		challenges.add(challenge);
-	}
-	
-	private Challenge findChallenge(int id) {
-		return challenges.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+		challengeRepo.saveAndFlush(challenge);
 	}
 }
