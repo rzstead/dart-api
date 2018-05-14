@@ -2,6 +2,9 @@ package dart;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.awt.List;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.junit.FixMethodOrder;
@@ -28,6 +31,11 @@ class TestChallengeController {
 		System.out.println("testAdd");
 		assertEquals(1, challengeController.getChallenges().size());
 	}
+	
+	@Test
+	void testGetTheChallenges() {
+		assertIterableEquals(new ArrayList<Challenge>(), challengeController.getChallenges());
+	}
 
 	@Test
 	void testGetChallenge() {
@@ -38,18 +46,17 @@ class TestChallengeController {
 	
 	@Test
 	void testUpdateChallenge() {
-		
-	}
-	
-	@Test
-	void testGetChallenges() {
-		
-		fail("Not yet implemented");
+		Challenge edit = challengeController.getChallenge(1);
+		edit.setDescription("Changed");
+		challengeController.updateChallenge(edit);
+		Challenge edited = challengeController.getChallenge(1);
+		assertEquals("Changed", edited.getDescription());
 	}
 
 	@Test
-	void testRemoveChallenge() {
-		fail("Not yet implemented");
+	void testRemoveChallenge() throws FileNotFoundException {
+		challengeController.removeChallenge(1);
+		assertEquals(0, challengeController.getChallenges().size());
 	}
 
 }

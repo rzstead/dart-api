@@ -4,11 +4,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class TestLoginController {
+import controllers.LoginController;
+import models.User;
 
+class TestLoginController {
+	
+	public static LoginController loginController = new LoginController();
+	
 	@Test
 	void testLogin() {
-		fail("Not yet implemented");
+		assert(loginController.login(new User()));
 	}
 
 }

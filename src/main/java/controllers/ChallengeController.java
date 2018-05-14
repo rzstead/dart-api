@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,10 +39,12 @@ public class ChallengeController {
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-	public void removeChallenge(@PathVariable int id) {
+	public void removeChallenge(@PathVariable int id) throws FileNotFoundException {
 		Challenge existing = findChallenge(id);
 		if(existing != null) {
 			challenges.remove(existing);
+		}else {
+			throw new FileNotFoundException("Could not find challenge with that id!");
 		}
 		//userRepo.deleteById(id);
 	}
