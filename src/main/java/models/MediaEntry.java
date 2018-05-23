@@ -8,18 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-//@Entity
+@Entity
 public class MediaEntry {
-	//@Id
-	//@Column(name = "item_id")
-	//@GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
+	@Column(name = "media_id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	//@ManyToOne
-	//@JoinColumn(name="project_id")
+	@ManyToOne
 	private Project project;
 	private String mediaLink;
 	private String description;
-	private int rating;
+	private boolean isVideo;
 
 	public int getId() {
 		return id;
@@ -27,14 +26,6 @@ public class MediaEntry {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public Project getProject() {
-		return project;
-	}
-
-	public void setProject(Project project) {
-		this.project = project;
 	}
 
 	public String getMediaLink() {
@@ -53,11 +44,20 @@ public class MediaEntry {
 		this.description = description;
 	}
 
-	public int getRating() {
-		return rating;
+	public boolean isVideo() {
+		return isVideo;
 	}
 
-	public void setRating(int rating) {
-		this.rating = rating;
+	public void setVideo(boolean isVideo) {
+		this.isVideo = isVideo;
 	}
+	
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+	
 }

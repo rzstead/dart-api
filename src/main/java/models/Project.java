@@ -9,18 +9,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-//@Entity
+@Entity
 public class Project {
-	//@Id
-	//@Column(name="project_id")
-	//@GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
+	@Column(name="project_id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-	private User artist;
+	@ManyToOne
+	private User user;
 	private String description;
-	//@OneToMany(mappedBy="project")
+	@OneToMany(mappedBy="project")
 	private List<MediaEntry> gallery = new ArrayList<>();
+	@OneToMany(mappedBy="project")
 	private List<Comment> comments = new ArrayList<>();
 	private int rating;
 	private Date postDate;
@@ -32,13 +36,13 @@ public class Project {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public User getArtist() {
-		return artist;
+	
+	public void setUser(User user) {
+		this.user = user;
 	}
-
-	public void setArtist(User artist) {
-		this.artist = artist;
+	
+	public User getUserId() {
+		return user;
 	}
 
 	public String getDescription() {

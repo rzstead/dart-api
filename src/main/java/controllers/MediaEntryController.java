@@ -20,11 +20,6 @@ public class MediaEntryController{
 	@Autowired
 	private MediaEntryJpaRepository mediaEntryRepo;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public List<MediaEntry> getMediaEntrys() {
-		return mediaEntryRepo.findAll();
-	}
-
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public MediaEntry getMediaEntry(@PathVariable int id) {
 		return mediaEntryRepo.findById(id).orElse(null);
@@ -36,7 +31,6 @@ public class MediaEntryController{
 		if(existing != null) {
 			existing.setDescription(mediaEntry.getDescription());
 			existing.setMediaLink(mediaEntry.getMediaLink());
-			existing.setRating(mediaEntry.getRating());
 			mediaEntryRepo.saveAndFlush(existing);
 		}
 	}

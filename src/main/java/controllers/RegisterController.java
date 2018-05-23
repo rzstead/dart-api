@@ -21,6 +21,11 @@ public class RegisterController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public Boolean register(@RequestBody User user) {
+		User found = userRepo.findAll().stream().filter(x -> x.getUsername() != user.getUsername()).findAny().orElse(null);
+		if(found == null) {
+			userRepo.saveAndFlush(user);
+			return true;
+		}
 		return false;
 	}
 }

@@ -21,23 +21,13 @@ public class SubmissionController {
 	@Autowired
 	private SubmissionJpaRepository submissionRepo;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Submission> getSubmissions() {
-		return submissionRepo.findAll();
-	}
-
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public Submission getSubmission(@PathVariable int id) {
 		return submissionRepo.findById(id).orElse(null);
 	}
-
+	
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public void removeSubmission(@PathVariable int id) {
 		submissionRepo.deleteById(id);
-	}
-	
-	@RequestMapping(method = RequestMethod.POST)
-	public void addSubmission(@RequestBody Submission submission) {
-		submissionRepo.saveAndFlush(submission);
 	}
 }

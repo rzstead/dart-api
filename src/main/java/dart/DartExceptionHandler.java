@@ -9,10 +9,11 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class MyExceptionHandler extends ResponseEntityExceptionHandler{
+public class DartExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(value = IllegalArgumentException.class)
-	public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
-		return handleExceptionInternal(ex, ex, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-	}
+    @ExceptionHandler(value=IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request){
+        return handleExceptionInternal(ex, ex, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
 }

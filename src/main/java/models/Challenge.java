@@ -4,12 +4,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+@Entity
 public class Challenge {
+	
+	@Id
+	@Column(name="challenge_id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private String title;
 	private String description;
 	private Date startDate;
 	private Date endDate;
+	@OneToMany(mappedBy="challenge")
 	private List<Submission> submissions = new ArrayList<Submission>();
 	
 	public int getId() {

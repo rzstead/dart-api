@@ -1,62 +1,78 @@
 package dart;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.awt.List;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import static org.junit.Assert.*;
 import java.util.Date;
 
 import org.junit.FixMethodOrder;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import controllers.ChallengeController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.restassured.http.ContentType;
 import models.Challenge;
-import models.Submission;
+
+import static io.restassured.RestAssured.*;
+import static io.restassured.matcher.RestAssuredMatchers.*;
+import static org.hamcrest.Matchers.*;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class TestChallengeController {
-	public static ChallengeController challengeController = new ChallengeController();
+public class TestChallengeController {
+	private static ObjectMapper mapper = new ObjectMapper();
 	@Test
-	void testAddChallenge() {
+	public void A_testAddChallenge() throws JsonProcessingException {
+		Challenge challenge = createChallenge();
+		String body = mapper.writeValueAsString(challenge);
+		int statusCode = given().
+				accept(ContentType.JSON).
+				contentType(ContentType.JSON).
+				body(body).
+				when().
+				post("/challenge").
+				thenReturn().
+				statusCode();
+		assertEquals(200, statusCode);
+		//given().get("challenge/")
+	}
+
+	@Test
+	public void B_testGetChallenges() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void C_testGetChallenge() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void D_testUpdateChallenge() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void E_testRemoveChallenge() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void F_testAddSubmission() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void G_testGetSubmissions() {
+		fail("Not yet implemented");
+	}
+
+	private Challenge createChallenge() {
 		Challenge challenge = new Challenge();
-		challenge.setId(1);
+		challenge.setDescription("This is a test challenge.");
+		challenge.setTitle("Test Challenge");
 		challenge.setStartDate(new Date());
 		challenge.setEndDate(new Date());
-		challenge.setDescription("Description");
-		challenge.setTitle("Cool Challenge");
-		Submission sub = new Submission();
-		sub.setId(1);
-		challenge.getSubmissions().add(sub);
-		challengeController.addChallenge(challenge);
-		System.out.println("testAdd");
-		assertEquals(1, challengeController.getChallenges().size());
-	}
-	
-	@Test
-	void testGetTheChallenges() {
-		assertIterableEquals(new ArrayList<Challenge>(), challengeController.getChallenges());
-	}
-
-	@Test
-	void testGetChallenge() {
-		Challenge gotten = challengeController.getChallenge(1);
-		assertNotNull(gotten);
-		assertEquals(1, gotten.getId());
-	}
-	
-	@Test
-	void testUpdateChallenge() {
-		Challenge edit = challengeController.getChallenge(1);
-		edit.setDescription("Changed");
-		challengeController.updateChallenge(edit);
-		Challenge edited = challengeController.getChallenge(1);
-		assertEquals("Changed", edited.getDescription());
-	}
-
-	@Test
-	void testRemoveChallenge() throws FileNotFoundException {
-		challengeController.removeChallenge(1);
-		assertEquals(0, challengeController.getChallenges().size());
+		return challenge;
 	}
 
 }

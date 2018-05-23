@@ -18,11 +18,6 @@ public class CommentController {
 	@Autowired
 	private CommentJpaRepository commentRepo;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Comment> getComments() {
-		return commentRepo.findAll();
-	}
-
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public Comment getComment(@PathVariable int id) {
 		return commentRepo.findById(id).orElse(null);
@@ -40,10 +35,5 @@ public class CommentController {
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public void removeComment(@PathVariable int id) {
 		commentRepo.deleteById(id);
-	}
-	
-	@RequestMapping(method = RequestMethod.POST)
-	public void addComment(@RequestBody Comment comment) {
-		commentRepo.saveAndFlush(comment);
 	}
 }

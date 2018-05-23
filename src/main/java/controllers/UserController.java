@@ -1,6 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,26 +22,26 @@ public class UserController {
 		return userRepo.findAll();
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	public User getUser(@PathVariable int id) {
-		return userRepo.findById(id).orElse(null);
+	@RequestMapping(path = "/{username}", method = RequestMethod.GET)
+	public User getUser(@PathVariable String username) {
+		return userRepo.findById(username).orElse(null);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public void updateUser(@RequestBody User user) {
-		User existing = userRepo.findById(user.getId()).orElse(null);
+		User existing = userRepo.findById(user.getUsername()).orElse(null);
 		if(existing != null) {
 			existing.setAvatarLink(user.getAvatarLink());
 			existing.setBackgroundLink(user.getBackgroundLink());
 			existing.setDescription(user.getDescription());
-			existing.setHashedPass(user.getHashedPass());
+			existing.setPassword(user.getPassword());
 			existing.setUsername(user.getUsername());
 			userRepo.saveAndFlush(existing);
 		}
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-	public void removeUser(@PathVariable int id) {
-		userRepo.deleteById(id);
+	@RequestMapping(path = "/{username}", method = RequestMethod.DELETE)
+	public void removeUser(@PathVariable String username) {
+		userRepo.deleteById(username);
 	}
 }
