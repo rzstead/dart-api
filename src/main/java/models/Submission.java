@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Submission {
 	@Id
@@ -16,6 +18,7 @@ public class Submission {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	@ManyToOne
+	@JsonIgnore
 	private Challenge challenge;
 	@ManyToOne
 	private Project project;

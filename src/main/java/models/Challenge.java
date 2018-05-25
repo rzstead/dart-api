@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 @Entity
 public class Challenge {
-	
 	@Id
 	@Column(name="challenge_id")
 	@GeneratedValue(strategy=GenerationType.AUTO)
