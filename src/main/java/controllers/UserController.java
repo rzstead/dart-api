@@ -1,6 +1,9 @@
 package controllers;
 
 import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,17 +19,17 @@ import repos.UserJpaRepository;
 public class UserController {
 	@Autowired
 	private UserJpaRepository userRepo;
-
+	@Transactional
 	@RequestMapping(method = RequestMethod.GET)
 	public List<User> getUsers() {
 		return userRepo.findAll();
 	}
-
+	@Transactional
 	@RequestMapping(path = "/{username}", method = RequestMethod.GET)
 	public User getUser(@PathVariable String username) {
 		return userRepo.findById(username).orElse(null);
 	}
-
+	@Transactional
 	@RequestMapping(method = RequestMethod.PUT)
 	public void updateUser(@RequestBody User user) {
 		User existing = userRepo.findById(user.getUsername()).orElse(null);
@@ -39,7 +42,7 @@ public class UserController {
 			userRepo.saveAndFlush(existing);
 		}
 	}
-
+	@Transactional
 	@RequestMapping(path = "/{username}", method = RequestMethod.DELETE)
 	public void removeUser(@PathVariable String username) {
 		userRepo.deleteById(username);

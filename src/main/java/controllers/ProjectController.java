@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,16 +26,19 @@ public class ProjectController {
 	@Autowired 
 	private MediaEntryJpaRepository mediaRepo;
 
+	@Transactional
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Project> getProjects() {
 		return projectRepo.findAll();
 	}
 
+	@Transactional
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public Project getProject(@PathVariable int id) {
 		return projectRepo.findById(id).orElse(null);
 	}
 
+	@Transactional
 	@RequestMapping(method = RequestMethod.PUT)
 	public void updateProject(@RequestBody Project project) {
 		Project existing = projectRepo.findById(project.getId()).orElse(null);
@@ -43,21 +48,25 @@ public class ProjectController {
 		}
 	}
 
+	@Transactional
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public void removeProject(@PathVariable int id) {
 		projectRepo.deleteById(id);
 	}
 	
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public void addProject(@RequestBody Project project) {
 		projectRepo.saveAndFlush(project);
 	}
 	
+	@Transactional
 	@RequestMapping(path="/{id}/media", method = RequestMethod.GET)
 	public List<MediaEntry> getMediaEntries(@PathVariable int id) {
 		return mediaRepo.findAll().stream().filter(x -> x.getProject().getId() == id).collect(Collectors.toList());
 	}
 	
+	@Transactional
 	@RequestMapping(path="/{id}/media", method = RequestMethod.POST)
 	public void addMediaEntry(@PathVariable int id, @RequestBody MediaEntry entry) {
 		mediaRepo.saveAndFlush(entry);
@@ -70,7 +79,8 @@ public class ProjectController {
 		}
 	}
 	
-	@RequestMapping(path="/{id}/media", method = RequestMethod.POST)
+	@Transactional
+	@RequestMapping(path="/{id}/media", method = RequestMethod.DELETE)
 	public void removeMediaEntry(@PathVariable int id, @RequestBody MediaEntry entry) {
 		Project project = projectRepo.findById(id).orElse(null);
 		if(project != null) {

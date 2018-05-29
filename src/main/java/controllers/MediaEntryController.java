@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,11 +22,13 @@ public class MediaEntryController{
 	@Autowired
 	private MediaEntryJpaRepository mediaEntryRepo;
 
+	@Transactional
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public MediaEntry getMediaEntry(@PathVariable int id) {
 		return mediaEntryRepo.findById(id).orElse(null);
 	}
 
+	@Transactional
 	@RequestMapping(method = RequestMethod.PUT)
 	public void updateMediaEntry(@RequestBody MediaEntry mediaEntry) {
 		MediaEntry existing = mediaEntryRepo.findById(mediaEntry.getId()).orElse(null);
@@ -33,10 +37,5 @@ public class MediaEntryController{
 			existing.setMediaLink(mediaEntry.getMediaLink());
 			mediaEntryRepo.saveAndFlush(existing);
 		}
-	}
-
-	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-	public void removeMediaEntry(@PathVariable int id) {
-		mediaEntryRepo.deleteById(id);
 	}
 }
