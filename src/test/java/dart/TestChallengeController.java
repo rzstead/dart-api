@@ -77,8 +77,8 @@ public class TestChallengeController {
 				.body(mapper.writeValueAsString(sub)).when().post("/challenge/{id}/submission").then().assertThat()
 				.statusCode(200);
 		Challenge gottenChallenge = mapper.readValue(given().pathParams("id", challenge.getId()).get("/challenge/{id}").getBody().asString(), Challenge.class);
-		//assertTrue(gottenChallenge.getSubmissions().size() > 0);
-	}
+		assert(gottenChallenge.getSubmissions().size() > 0);
+ 	}
 
 	@Test
 	public void F_testGetSubmissions() throws JsonParseException, JsonMappingException, IOException {

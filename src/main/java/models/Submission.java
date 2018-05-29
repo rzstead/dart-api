@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,20 +15,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Submission {
 	@Id
-	@Column(name="submission_id")
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private int submissionId;
 	@ManyToOne
 	@JsonIgnore
 	private Challenge challenge;
-	@ManyToOne
+	@OneToOne
+	@JoinColumn
 	private Project project;
 	
 	public int getId() {
-		return id;
+		return submissionId;
 	}
 	public void setId(int id) {
-		this.id = id;
+		this.submissionId = id;
 	}
 	public Project getProject() {
 		return project;

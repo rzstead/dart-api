@@ -2,30 +2,33 @@ package models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class MediaEntry {
 	@Id
-	@Column(name = "media_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private int mediaId;
 	@ManyToOne
+	@JsonIgnore  
 	private Project project;
 	private String mediaLink;
 	private String description;
 	private boolean isVideo;
-
+	
 	public int getId() {
-		return id;
+		return mediaId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.mediaId = id;
 	}
 
 	public String getMediaLink() {

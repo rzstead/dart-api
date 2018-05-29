@@ -59,10 +59,24 @@ public class ChallengeController {
 	
 	@RequestMapping(path="/{id}/submission", method = RequestMethod.POST)
 	public void addSubmission(@PathVariable int id, @RequestBody Submission submission) {
-		submissionRepo.saveAndFlush(submission);
+		submissionRepo.saveAndFlush(submission);		
 		Challenge challenge = challengeRepo.findById(id).orElse(null);
 		if(challenge != null) {
-			challenge.getSubmissions().add(submission);	
+			challenge.addSubmission(submission);
+			challengeRepo.saveAndFlush(challenge);
+		}else {
+			throw new IllegalArgumentException("Submission could not be saved!");
+		}
+	}
+	
+	@RequestMapping(path="/{id}/submission", method = RequestMethod.DELETE)
+	public void removeSubmission(@PathVariable int id, @RequestBody Submission submission) {	
+		Challenge challenge = challengeRepo.findById(id).orElse(null);
+		if(challenge != null) {
+			challenge.removeSubmission(submission);
+			challengeRepo.saveAndFlush(challenge);
+		}else {
+			throw new IllegalArgumentException("Submission could not be saved!");
 		}
 	}
 	
