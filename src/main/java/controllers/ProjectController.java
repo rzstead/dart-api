@@ -70,7 +70,7 @@ public class ProjectController {
 		}
 	}
 	
-	@RequestMapping(path="/{id}/media", method = RequestMethod.POST)
+	@RequestMapping(path="/{id}/media", method = RequestMethod.DELETE)
 	public void removeMediaEntry(@PathVariable int id, @RequestBody MediaEntry entry) {
 		Project project = projectRepo.findById(id).orElse(null);
 		if(project != null) {

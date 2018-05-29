@@ -106,9 +106,9 @@ public class TestProjectController {
 	private MediaEntry createMediaEntry(Project project) {
 		MediaEntry entry = new MediaEntry();
 		entry.setProject(project);
-		entry.setMediaLink("https://img-lumas-avensogmbh1.netdna-ssl.com/showimg_mcu26_full.jpg");
+		//entry.setMediaLink("https://img-lumas-avensogmbh1.netdna-ssl.com/showimg_mcu26_full.jpg");
 		entry.setVideo(false);
-		entry.setDescription("Clarissa's Wave");
+		entry.setDescription("Hehe");
 		return entry;
 	}
 
