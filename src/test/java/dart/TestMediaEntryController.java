@@ -15,10 +15,4 @@ public class TestMediaEntryController {
 	public void testUpdateMediaEntry() {
 		fail("Not yet implemented");
 	}
-
-	@Test
-	public void testRemoveMediaEntry() {
-		fail("Not yet implemented");
-	}
-
 }

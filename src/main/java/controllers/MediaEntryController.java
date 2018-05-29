@@ -41,11 +41,6 @@ public class MediaEntryController {
 		}
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-	public void removeMediaEntry(@PathVariable int id) {
-		mediaEntryRepo.deleteById(id);
-	}
-
 	@RequestMapping(value = "/{id}/uploadMedia/{isVideo}", method = RequestMethod.POST)
 	public void handleMediaUpload(@PathVariable int id, @PathVariable Boolean isVideo, @RequestParam("file") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {
