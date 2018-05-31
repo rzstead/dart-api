@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,12 +47,16 @@ public class MediaEntryController {
 		}
 	}
 
+	@Transactional
 	@RequestMapping(value = "/{id}/uploadMedia/{isVideo}", method = RequestMethod.POST)
-	public void handleMediaUpload(@PathVariable int id, @PathVariable Boolean isVideo, @RequestParam("file") MultipartFile file) throws IOException {
+	public void handleMediaUpload(@PathVariable int id, @PathVariable Boolean isVideo, @RequestPart(value="file") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {
-			File fileStream = null;
-			file.transferTo(fileStream);
-			String fileLocation = S3Interaction.putMedia(fileStream);
+			File convFile = new File(file.getOriginalFilename());
+		    FileOutputStream fos = new FileOutputStream(convFile);
+		    fos.write(file.getBytes());
+		    fos.close();
+			String fileLocation = S3Interaction.putMedia(convFile, file.getContentType());
+			convFile.delete();
 			MediaEntry entry = mediaEntryRepo.findById(id).orElse(null);
 			entry.setMediaLink(fileLocation);
 			entry.setVideo(isVideo);

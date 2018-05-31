@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import models.MediaEntry;
 import models.Project;
+import models.S3Interaction;
 import repos.MediaEntryJpaRepository;
 import repos.ProjectJpaRepository;
 @RestController
@@ -79,9 +80,13 @@ public class ProjectController {
 		}
 	}
 	
-	@Transactional	@RequestMapping(path="/{id}/media", method = RequestMethod.DELETE)	public void removeMediaEntry(@PathVariable int id, @RequestBody MediaEntry entry) {
+	@Transactional	
+	@RequestMapping(path="/{id}/media/{mediaId}", method = RequestMethod.DELETE)	
+	public void removeMediaEntry(@PathVariable int id, @PathVariable int mediaId) {
 		Project project = projectRepo.findById(id).orElse(null);
-		if(project != null) {
+		MediaEntry entry = mediaRepo.findById(mediaId).orElse(null);
+		if(project != null && entry != null) {
+			S3Interaction.deleteMedia(entry.getMediaLink());
 			project.removeMediaEntry(entry);
 			projectRepo.saveAndFlush(project);
 		}else {

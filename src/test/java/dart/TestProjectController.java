@@ -86,6 +86,13 @@ public class TestProjectController {
 		assertTrue(gottenProject.getGallery().size() > 0);
 	}
 	
+	@Test public void G_RemoveMediaEntry() throws JsonParseException, JsonMappingException, IOException {
+		List<Project> projects = getProjects();
+		Project project = projects.get(projects.size() - 1);
+		MediaEntry removing = project.getGallery().get(project.getGallery().size() - 1);
+		given().pathParams("id", project.getId(), "mediaId", removing.getId()).when().delete("/project/{id}/media/{mediaId}").then().assertThat().statusCode(200);
+	}
+	
 	@Test
 	public void G_testRemoveProject() throws JsonParseException, JsonMappingException, IOException {
 		List<Project> projects = getProjects();
@@ -106,7 +113,6 @@ public class TestProjectController {
 	private MediaEntry createMediaEntry(Project project) {
 		MediaEntry entry = new MediaEntry();
 		entry.setProject(project);
-		//entry.setMediaLink("https://img-lumas-avensogmbh1.netdna-ssl.com/showimg_mcu26_full.jpg");
 		entry.setVideo(false);
 		entry.setDescription("Hehe");
 		return entry;
