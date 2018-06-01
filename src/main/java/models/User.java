@@ -1,6 +1,9 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +23,8 @@ public class User {
 	private String description;
 	private String avatarLink;
 	private String backgroundLink;
+	@ElementCollection
+	private List<String> roles;
 
 	public String getPassword() {
 		return password;
