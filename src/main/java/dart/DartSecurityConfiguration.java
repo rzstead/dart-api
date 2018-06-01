@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -40,13 +41,15 @@ public class DartSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http
-		.csrf().disable()
-        .authorizeRequests()
-            .antMatchers("/register", "/login").anonymous()
-            .anyRequest().authenticated()
-            .and()
-            .httpBasic();
-
+		http.authorizeRequests()
+		.antMatchers("/register").permitAll()
+		.anyRequest()
+		.authenticated()
+		.and()
+		.httpBasic()
+		.and()
+		.sessionManagement()
+		.sessionCreationPolicy(SessionCreationPolicy.NEVER)
+		.and().csrf().disable();
 	}
 }

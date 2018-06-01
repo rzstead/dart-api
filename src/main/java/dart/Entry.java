@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackages="controllers")
+@ComponentScan(basePackages= {"controllers", "dart"})
 @EntityScan(basePackages="models")
 @EnableJpaRepositories(basePackages="repos")
 public class Entry extends SpringBootServletInitializer {
