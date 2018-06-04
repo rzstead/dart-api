@@ -46,10 +46,10 @@ public class MediaEntryController {
 			mediaEntryRepo.saveAndFlush(existing);
 		}
 	}
-
+	
 	@Transactional
 	@RequestMapping(value = "/{id}/uploadMedia/{isVideo}", method = RequestMethod.POST)
-	public void handleMediaUpload(@PathVariable int id, @PathVariable Boolean isVideo, @RequestPart(value="file") MultipartFile file) throws IOException {
+	public void handleMediaUpload(@PathVariable int id, @PathVariable Boolean isVideo, @RequestPart("file") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {
 			File convFile = new File(file.getOriginalFilename());
 		    FileOutputStream fos = new FileOutputStream(convFile);
