@@ -1,5 +1,8 @@
 package controllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,11 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import models.MediaEntry;
 import models.Project;
 import models.S3Interaction;
+import models.User;
 import repos.MediaEntryJpaRepository;
 import repos.ProjectJpaRepository;
 @RestController
@@ -38,7 +44,15 @@ public class ProjectController {
 	public Project getProject(@PathVariable int id) {
 		return projectRepo.findById(id).orElse(null);
 	}
-
+	
+	@Transactional
+	@RequestMapping(path = "/user/{username}", method = RequestMethod.GET)
+	public List<Project> getProjectsByUser(@PathVariable String username) {
+		List<Project> notNull = projectRepo.findAll().stream().filter(x -> x.getUser() != null).collect(Collectors.toList());
+		
+		return notNull.stream().filter(x -> x.getUser().getUsername().equals(username)).collect(Collectors.toList());
+	}
+	
 	@Transactional
 	@RequestMapping(method = RequestMethod.PUT)
 	public void updateProject(@RequestBody Project project) {
@@ -57,8 +71,10 @@ public class ProjectController {
 	
 	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
-	public void addProject(@RequestBody Project project) {
+	public Project addProject(@RequestBody Project project) {
 		projectRepo.saveAndFlush(project);
+		List<Project> projects = projectRepo.findAll();
+		return projects.get(projects.size() - 1);
 	}
 	
 	@Transactional
@@ -69,12 +85,13 @@ public class ProjectController {
 	
 	@Transactional
 	@RequestMapping(path="/{id}/media", method = RequestMethod.POST)
-	public void addMediaEntry(@PathVariable int id, @RequestBody MediaEntry entry) {
-		mediaRepo.saveAndFlush(entry);
+	public MediaEntry addMediaEntry(@PathVariable int id, @RequestBody MediaEntry entry) {
+		MediaEntry result = mediaRepo.saveAndFlush(entry);
 		Project project = projectRepo.findById(id).orElse(null);
 		if(project != null) {
-			project.getGallery().add(entry);
-			projectRepo.saveAndFlush(project);
+			project.addMedia(entry);
+			project = projectRepo.saveAndFlush(project);
+			return result;
 		}else {
 			throw new IllegalArgumentException();
 		}
