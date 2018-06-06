@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -24,7 +25,15 @@ public class User {
 	private String avatarLink;
 	private String backgroundLink;
 	@ElementCollection
-	private List<String> roles;
+	private List<String> roles = new ArrayList<>();
+	
+	public void addRole(String role) {
+		roles.add(role);
+	}
+	
+	public void removeRole(String role) {
+		roles.remove(role);
+	}
 
 	public String getPassword() {
 		return password;

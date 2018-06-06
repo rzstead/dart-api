@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,10 +14,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity(debug = true)
 public class DartSecurityConfiguration extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private DataSource datasource;
 
@@ -42,14 +43,9 @@ public class DartSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/register").permitAll()
-		.anyRequest()
-		.authenticated()
-		.and()
-		.httpBasic()
-		.and()
-		.sessionManagement()
-		.sessionCreationPolicy(SessionCreationPolicy.NEVER)
-		.and().csrf().disable();
+				.antMatchers("/register/**", "/project/**", "/user/**", "/challenge/**", "/media-entry/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/register/resetPassword").permitAll()
+				.anyRequest().authenticated().and().httpBasic().and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.NEVER).and().csrf().disable();
 	}
 }

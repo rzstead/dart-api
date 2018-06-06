@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import models.Challenge;
+import models.Log;
 import models.Submission;
 import repos.ChallengeJpaRepository;
+import repos.LogJpaRepository;
 import repos.SubmissionJpaRepository;
 
 @RestController
@@ -26,6 +28,8 @@ public class ChallengeController {
 	private ChallengeJpaRepository challengeRepo;
 	@Autowired
 	private SubmissionJpaRepository submissionRepo;
+	@Autowired
+	private LogJpaRepository logRepo;
 
 	@Transactional
 	@RequestMapping(method = RequestMethod.GET)
@@ -49,6 +53,9 @@ public class ChallengeController {
 			existing.setEndDate(challenge.getEndDate());
 			existing.setTitle(challenge.getTitle());
 			challengeRepo.saveAndFlush(existing);
+			Log log = new Log();
+			log.logInteraction("PUT", "Challenge", "Updated challenge with new details");
+			logRepo.saveAndFlush(log);
 		}
 	}
 
@@ -56,12 +63,18 @@ public class ChallengeController {
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public void removeChallenge(@PathVariable int id) throws FileNotFoundException {
 		challengeRepo.deleteById(id);
+		Log log = new Log();
+		log.logInteraction("DELETE", "Challenge", "Deleted Challenge with id " + id);
+		logRepo.saveAndFlush(log);
 	}
 	
 	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public void addChallenge(@RequestBody Challenge challenge) {
 		challengeRepo.saveAndFlush(challenge);
+		Log log = new Log();
+		log.logInteraction("POST", "Challenge", "Added new challenge");
+		logRepo.saveAndFlush(log);
 	}
 	
 	@Transactional
@@ -72,6 +85,9 @@ public class ChallengeController {
 		if(challenge != null) {
 			challenge.addSubmission(submission);
 			challengeRepo.saveAndFlush(challenge);
+			Log log = new Log();
+			log.logInteraction("POST", "Submission", "Addded new submission with id " + submission.getId() + " to challenge with id " + challenge.getId());
+			logRepo.saveAndFlush(log);
 		}else {
 			throw new IllegalArgumentException("Submission could not be saved!");
 		}
@@ -84,6 +100,9 @@ public class ChallengeController {
 		if(challenge != null) {
 			challenge.removeSubmission(submission);
 			challengeRepo.saveAndFlush(challenge);
+			Log log = new Log();
+			log.logInteraction("DELETE", "Submission", "Deleted submission with id " + submission.getId() + " from challenge with id " + id);
+			logRepo.saveAndFlush(log);
 		}else {
 			throw new IllegalArgumentException("Submission could not be saved!");
 		}

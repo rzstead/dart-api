@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import models.Log;
 import models.MediaEntry;
 import models.S3Interaction;
+import repos.LogJpaRepository;
 import repos.MediaEntryJpaRepository;
 
 @RestController
@@ -29,6 +31,8 @@ public class MediaEntryController {
 
 	@Autowired
 	private MediaEntryJpaRepository mediaEntryRepo;
+	@Autowired
+	private LogJpaRepository logRepo;
 
 	@Transactional
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -44,6 +48,9 @@ public class MediaEntryController {
 			existing.setDescription(mediaEntry.getDescription());
 			existing.setMediaLink(mediaEntry.getMediaLink());
 			mediaEntryRepo.saveAndFlush(existing);
+			Log log = new Log();
+			log.logInteraction("PUT", "MediaEntry", "Updated MediaEntry with new details");
+			logRepo.saveAndFlush(log);
 		}
 	}
 	
@@ -61,6 +68,9 @@ public class MediaEntryController {
 			entry.setMediaLink(fileLocation);
 			entry.setVideo(isVideo);
 			mediaEntryRepo.saveAndFlush(entry);
+			Log log = new Log();
+			log.logInteraction("POST", "MediaEntry", "Added image to S3");
+			logRepo.saveAndFlush(log);
 		}else {
 			throw new IllegalArgumentException();
 		}

@@ -14,13 +14,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackages= {"controllers", "dart"})
-@EntityScan(basePackages="models")
+@EntityScan(basePackages= "models")
 @EnableJpaRepositories(basePackages="repos")public class Entry extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Entry.class, args);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurerAdapter() {

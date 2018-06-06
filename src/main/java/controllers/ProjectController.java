@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import models.Log;
 import models.MediaEntry;
 import models.Project;
 import models.S3Interaction;
 import models.User;
+import repos.LogJpaRepository;
 import repos.MediaEntryJpaRepository;
 import repos.ProjectJpaRepository;
 @RestController
@@ -32,6 +34,8 @@ public class ProjectController {
 	private ProjectJpaRepository projectRepo;
 	@Autowired 
 	private MediaEntryJpaRepository mediaRepo;
+	@Autowired
+	private LogJpaRepository logRepo;
 
 	@Transactional
 	@RequestMapping(method = RequestMethod.GET)
@@ -60,6 +64,9 @@ public class ProjectController {
 		if(existing != null) {
 			existing.setDescription(project.getDescription());
 			existing.setGallery(project.getGallery());
+			Log log = new Log();
+			log.logInteraction("PUT", "Project", "Updated project with new details");
+			logRepo.saveAndFlush(log);
 		}
 	}
 
@@ -67,6 +74,9 @@ public class ProjectController {
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public void removeProject(@PathVariable int id) {
 		projectRepo.deleteById(id);
+		Log log = new Log();
+		log.logInteraction("DELETE", "Project", "Deleted project with id" + id);
+		logRepo.saveAndFlush(log);
 	}
 	
 	@Transactional
@@ -74,6 +84,9 @@ public class ProjectController {
 	public Project addProject(@RequestBody Project project) {
 		projectRepo.saveAndFlush(project);
 		List<Project> projects = projectRepo.findAll();
+		Log log = new Log();
+		log.logInteraction("POST", "Project", "Added new project.");
+		logRepo.saveAndFlush(log);
 		return projects.get(projects.size() - 1);
 	}
 	
@@ -91,6 +104,9 @@ public class ProjectController {
 		if(project != null) {
 			project.addMedia(entry);
 			project = projectRepo.saveAndFlush(project);
+			Log log = new Log();
+			log.logInteraction("POST", "MediaEntry", "Added a new MediaEntry to Project " + id);
+			logRepo.saveAndFlush(log);
 			return result;
 		}else {
 			throw new IllegalArgumentException();
@@ -106,6 +122,9 @@ public class ProjectController {
 			S3Interaction.deleteMedia(entry.getMediaLink());
 			project.removeMediaEntry(entry);
 			projectRepo.saveAndFlush(project);
+			Log log = new Log();
+			log.logInteraction("DELETE", "MediaEntry", "Deleted MediaEntry with id " + mediaId + " from Project with id " + id);
+			logRepo.saveAndFlush(log);
 		}else {
 			throw new IllegalArgumentException();
 		}
