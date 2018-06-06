@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import models.Log;
 import models.Submission;
 import models.User;
+import repos.LogJpaRepository;
 import repos.SubmissionJpaRepository;
 
 @RestController
@@ -22,6 +24,8 @@ public class SubmissionController {
 
 	@Autowired
 	private SubmissionJpaRepository submissionRepo;
+	@Autowired
+	private LogJpaRepository logRepo;
 
 	@Transactional
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -33,5 +37,8 @@ public class SubmissionController {
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public void removeSubmission(@PathVariable int id) {
 		submissionRepo.deleteById(id);
+		Log log = new Log();
+		log.logInteraction("DELETE", "Submission", "Deleted submission with id " + id);
+		logRepo.saveAndFlush(log);
 	}
 }
